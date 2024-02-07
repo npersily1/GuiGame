@@ -12,7 +12,7 @@ public class GuiGame {
 
     private GuiGameView window;
     private int state;
-    //constructor
+    // Constructor
     public GuiGame(Player player, Player dealer) {
 
         state = 0;

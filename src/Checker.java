@@ -80,7 +80,7 @@ public class Checker {
         return 0;
     }
 
-    // returns hand name based off of score
+    // Returns hand name based off of score
     public String getHandName(int score) {
         if (COMBOS[score / 100].equals("High Card")) {
             return "High Card " + GuiGame.checkRoyal(score % 100);
@@ -89,7 +89,7 @@ public class Checker {
         return COMBOS[score / 100] + " with a high card " + GuiGame.checkRoyal(score % 100);
     }
 
-    //returns the point value for a hand
+    // Returns the point value for a hand
     public int assign(Card[] hand) {
         //set temp equal to all hands from rarest to least
         //if they have that hand return temp

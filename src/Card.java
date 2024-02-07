@@ -55,10 +55,10 @@ public class Card {
     }
 
     public void draw(Graphics g, int x, int y, GuiGameView window) {
-       // if (isRevealed) {
+        if (isRevealed) {
             g.drawImage(image, x, y, CARD_WIDTH, CARD_HEIGHT, window);
             return;
-        //}
-       // g.drawImage(BACK, x, y, CARD_WIDTH, CARD_HEIGHT, window);
+        }
+        g.drawImage(BACK, x, y, CARD_WIDTH, CARD_HEIGHT, window);
     }
 }

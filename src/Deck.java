@@ -14,7 +14,7 @@ public class Deck {
         cardsLeft = deck.size();
     }
 
-    // returns true if is empty
+    // Returns true if is empty
     public boolean isEmpty() {
         return !(cardsLeft > 0);
     }

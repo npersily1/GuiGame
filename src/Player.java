@@ -44,7 +44,7 @@ public class Player {
         return name;
     }
 
-    //setter
+    // Setter
     public void setPoints(int points) {
         this.points = points;
     }
