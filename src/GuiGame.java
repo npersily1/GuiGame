@@ -28,17 +28,22 @@ public class GuiGame {
 
     public void play() {
         //intro / instructions
+        state++;
+
+
+        ///if there is a yes after a continue response
+
         printInstructions();
         //game loop
         boolean didFold = false;
-
+        state++;
         while (player.getPoints() > 0) {
             //deal player cards
             int counter = 0;
 
             this.deal();
 
-            window.repaint();
+
             //betting loop
             for (int i = 0; i < 4; i++) {
                 player.addPoints(-5);
@@ -49,6 +54,7 @@ public class GuiGame {
                 }
 
             }
+            window.repaint();
             //end of game scenarios
             boolean win = win();
             printBoard(++counter);
@@ -87,6 +93,7 @@ public class GuiGame {
                 return true;
             }
         }
+        state = 0;
         return false;
     }
 
@@ -215,18 +222,6 @@ public class GuiGame {
         System.out.println("If you win you will make double what is put in");
         System.out.println("Good Luck");
     }
-
-    //main function
-    public static void main(String[] args) {
-        System.out.println("What is your name");
-        Scanner input = new Scanner(System.in);
-        Player player = new Player(input.nextLine());
-        Player dealer = new Player("dealer");
-        GuiGame game = new GuiGame(player, dealer);
-        game.play();
-
-    }
-
     public Player getPlayer() {
         return player;
     }
@@ -235,7 +230,23 @@ public class GuiGame {
         return dealer;
     }
 
+    public int getState() {
+        return state;
+    }
+
     public Card[] getMiddle() {
         return middle;
+    }
+
+    //main function
+    public static void main(String[] args) {
+        System.out.println("What is your name");
+        Scanner input = new Scanner(System.in);
+        Player player = new Player(input.nextLine());
+        Player dealer = new Player("dealer");
+        GuiGame game = new GuiGame(player, dealer);
+        //if yes on opening screen game.play;
+        game.play();
+
     }
 }

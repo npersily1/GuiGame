@@ -137,8 +137,8 @@ public class Checker {
     //gets highcard point value in any hand
     public int getHighCard(Card[] hand) {
 
-        int max = hand[0].getPoint();
-        for (int i = 1; i < 5; i++) {
+        int max = 0;
+        for (int i = 0; i < hand.length; i++) {
             if (max < hand[i].getPoint()) {
                 max = hand[i].getPoint();
             }

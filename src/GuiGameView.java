@@ -28,20 +28,36 @@ public class GuiGameView extends JFrame {
         g.setColor(Color.GREEN);
         g.fillRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 
+        if (game.getState() == 0) {
+            drawTitleScreen(g);
+            return;
+        }
+        if (game.getState() == 1) {
+            drawInstructions(g);
+            return;
+        }
+
+        //Draws player and dealer cards
         int x = X_PADDING;
         int gameY = WINDOW_HEIGHT - Y_PADDING;
-
         for (int i = 0; i < 2; i++) {
             game.getPlayer().getHand()[i].draw(g, x, gameY, this);
-            game.getDealer().getHand()[i].draw(g, x,Y_PADDING, this);
-            x+=  CARD_WIDTH + BETWEEN_CARDS;
+            game.getDealer().getHand()[i].draw(g, x, Y_PADDING, this);
+            x += CARD_WIDTH + BETWEEN_CARDS;
 
         }
-        x =  WINDOW_WIDTH - (3 * CARD_WIDTH + 2 * BETWEEN_CARDS) / 2;
+        // Paints center cards
+        x = WINDOW_WIDTH - (3 * CARD_WIDTH + 2 * BETWEEN_CARDS) / 2;
         for (int i = 0; i < 3; i++) {
-            game.getMiddle()[i].draw(g,x,WINDOW_HEIGHT / 2 - (Card.CARD_HEIGHT / 2), this);
-            x+= CARD_WIDTH + BETWEEN_CARDS;
+            game.getMiddle()[i].draw(g, x, WINDOW_HEIGHT / 2 - (Card.CARD_HEIGHT / 2), this);
+            x += CARD_WIDTH + BETWEEN_CARDS;
         }
     }
 
+    public void drawTitleScreen(Graphics g) {
+
+    }
+    public void drawInstructions(Graphics g) {
+
+    }
 }
