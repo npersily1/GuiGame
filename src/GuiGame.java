@@ -12,6 +12,7 @@ public class GuiGame {
 
     private GuiGameView window;
     private int state;
+
     // Constructor
     public GuiGame(Player player, Player dealer) {
 
@@ -29,10 +30,7 @@ public class GuiGame {
     public void play() {
         //intro / instructions
         state++;
-
-
         ///if there is a yes after a continue response
-
         printInstructions();
         //game loop
         boolean didFold = false;
@@ -40,26 +38,29 @@ public class GuiGame {
         while (player.getPoints() > 0) {
             //deal player cards
             int counter = 0;
-
             this.deal();
-
-
             //betting loop
             for (int i = 0; i < 4; i++) {
+                window.repaint();
                 player.addPoints(-5);
                 this.printBoard(++counter);
                 didFold = willFold();
                 if (didFold) {
                     break;
                 }
-
+                if(!(i == 3)) {
+                    middle[i].setRevealed(true);
+                }
+                else {
+                    dealer.getHand()[0].setRevealed(true);
+                    dealer.getHand()[1].setRevealed(true);
+                }
             }
-            window.repaint();
+
             //end of game scenarios
             boolean win = win();
             printBoard(++counter);
             if (!didFold && win) {
-
                 player.addPoints(50);
                 System.out.println("You win");
             } else if (win) {
@@ -67,15 +68,12 @@ public class GuiGame {
             } else {
                 System.out.println("You lost");
             }
-
+            window.repaint();
             if (!willContinue()) {
                 break;
             }
-
             reset();
-
         }
-
     }
 
     //returns true if the player wants to continue playing
@@ -119,7 +117,6 @@ public class GuiGame {
             }
         }
         return false;
-
     }
 
     //prints board with neccesary elements hidden based off of counter
@@ -222,6 +219,7 @@ public class GuiGame {
         System.out.println("If you win you will make double what is put in");
         System.out.println("Good Luck");
     }
+
     public Player getPlayer() {
         return player;
     }

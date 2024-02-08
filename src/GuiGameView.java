@@ -55,8 +55,10 @@ public class GuiGameView extends JFrame {
     }
 
     public void drawTitleScreen(Graphics g) {
-
+        Image startScreen = new ImageIcon("Resources/GuiGameTitle.jpg").getImage();
+        g.drawImage(startScreen, 0, 0, this);
     }
+
     public void drawInstructions(Graphics g) {
 
     }

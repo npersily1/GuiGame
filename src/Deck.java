@@ -51,5 +51,8 @@ public class Deck {
     //reset deck
     public void reset() {
         cardsLeft = 52;
+        for (int i = 0; i < 52; i++) {
+            deck.get(i).setRevealed(false);
+        }
     }
 }
