@@ -5,7 +5,7 @@ import java.awt.*;
 public class Card {
     //
     public static final Image BACK = new ImageIcon("Resources/Cards/back.png").getImage();
-    public static final int CARD_HEIGHT = 175,
+    public static final int CARD_HEIGHT = 150,
                             CARD_WIDTH = 100;
     private int point;
     private String suit;
@@ -13,12 +13,13 @@ public class Card {
     private Image image;
     private boolean isRevealed;
 
-    public Card(int point, String suit, String rank, int carNumber) {
+    public Card(int point, String suit, String rank, int cardNumber) {
         this.point = point;
         this.suit = suit;
         this.rank = rank;
         this.isRevealed = false;
-        image = new ImageIcon("Resources/Cards" + carNumber + ".png").getImage();
+
+        image = new ImageIcon("Resources/Cards/" + cardNumber + ".png").getImage();
     }
 
     //getters
@@ -60,10 +61,10 @@ public class Card {
     }
 
     public void draw(Graphics g, int x, int y, GuiGameView window) {
-//        if (isRevealed) {
-//            g.drawImage(image, x, y, CARD_WIDTH, CARD_HEIGHT, window);
-//            return;
-//        }
+        if (isRevealed) {
+            g.drawImage(image, x, y, CARD_WIDTH, CARD_HEIGHT, window);
+            return;
+        }
         g.drawImage(BACK, x, y, CARD_WIDTH, CARD_HEIGHT, window);
     }
 }

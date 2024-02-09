@@ -7,10 +7,8 @@ public class GuiGameView extends JFrame {
 
     public static final int WINDOW_WIDTH = 1000,
             WINDOW_HEIGHT = 600,
-            CARD_WIDTH = 100,
-            CARD_HEIGHT = 176,
-            X_PADDING = 162,
-            BETWEEN_CARDS = 76,
+
+    X_PADDING = (WINDOW_WIDTH - (Card.CARD_WIDTH * 3)) / 2,
             Y_PADDING = 40;
 
     private GuiGame game;
@@ -39,18 +37,18 @@ public class GuiGameView extends JFrame {
 
         //Draws player and dealer cards
         int x = X_PADDING;
-        int gameY = WINDOW_HEIGHT - Y_PADDING;
+        int gameY = WINDOW_HEIGHT - Y_PADDING - Card.CARD_HEIGHT + getInsets().top;
         for (int i = 0; i < 2; i++) {
             game.getPlayer().getHand()[i].draw(g, x, gameY, this);
             game.getDealer().getHand()[i].draw(g, x, Y_PADDING, this);
-            x += CARD_WIDTH + BETWEEN_CARDS;
+            x += Card.CARD_WIDTH * 2;
 
         }
         // Paints center cards
-        x = WINDOW_WIDTH - (3 * CARD_WIDTH + 2 * BETWEEN_CARDS) / 2;
+        x = (3 * Card.CARD_WIDTH + 2 * Card.CARD_WIDTH) / 2;
         for (int i = 0; i < 3; i++) {
             game.getMiddle()[i].draw(g, x, WINDOW_HEIGHT / 2 - (Card.CARD_HEIGHT / 2), this);
-            x += CARD_WIDTH + BETWEEN_CARDS;
+            x += Card.CARD_WIDTH * 2;
         }
     }
 

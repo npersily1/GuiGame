@@ -175,7 +175,7 @@ public class GuiGame {
     public void createDeck() {
         String[] ranks = new String[13];
         int[] points = new int[13];
-        String[] suits = {"Hearts", "Diamonds", "Clubs", "Spades"};
+        String[] suits = { "Spades", "Hearts", "Diamonds", "Clubs"};
         for (int i = 0; i < 13; i++) {
             String rank = checkRoyal(i + 2);
             ranks[i] = rank;
@@ -186,7 +186,7 @@ public class GuiGame {
 
     // checks if a number is greater than 10 and then returns corresponding special card name
     public static String checkRoyal(int num) {
-        if (num < 11)
+        if ( num > 1 ||num < 11)
             return "" + num;
         if (num == 11)
             return "Jack";

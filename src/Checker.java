@@ -29,13 +29,13 @@ public class Checker {
 
         this.p1[0] = p1.getHand()[0];
         this.p1[1] = p1.getHand()[1];
-        this.p1[2] = p1.getHand()[0];
+        this.p1[2] = middle[0];
         this.p1[3] = middle[1];
         this.p1[4] = middle[2];
 
         this.p2[0] = p2.getHand()[0];
         this.p2[1] = p2.getHand()[1];
-        this.p2[2] = p2.getHand()[0];
+        this.p2[2] = middle[0];
         this.p2[3] = middle[1];
         this.p2[4] = middle[2];
     }
