@@ -8,7 +8,7 @@ public class Deck {
         deck = new ArrayList<Card>();
         for (int i = 0; i < 13; i++) {
             for (int j = 0; j < 4; j++) {
-                deck.add(new Card(point[i], suit[j], rank[i], 4 * ((i -1) + j)));
+                deck.add(new Card(point[i], suit[j], rank[i], 4 * (point[i] - 1) + j));
             }
         }
         cardsLeft = deck.size();

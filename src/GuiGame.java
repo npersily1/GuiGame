@@ -186,7 +186,7 @@ public class GuiGame {
 
     // checks if a number is greater than 10 and then returns corresponding special card name
     public static String checkRoyal(int num) {
-        if ( num > 1 ||num < 11)
+        if ( num > 1 && num < 11)
             return "" + num;
         if (num == 11)
             return "Jack";
