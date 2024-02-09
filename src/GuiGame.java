@@ -163,6 +163,7 @@ public class GuiGame {
     public void deal() {
         for (int i = 0; i < 2; i++) {
             player.getHand()[i] = deck.deal();
+            player.getHand()[i].setRevealed(true);
             dealer.getHand()[i] = deck.deal();
 
             middle[i] = deck.deal();

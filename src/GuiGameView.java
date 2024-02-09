@@ -50,8 +50,15 @@ public class GuiGameView extends JFrame {
             game.getMiddle()[i].draw(g, x, WINDOW_HEIGHT / 2 - (Card.CARD_HEIGHT / 2), this);
             x += Card.CARD_WIDTH * 2;
         }
-    }
+        g.setColor(Color.YELLOW);
+        Font f = new Font("Serif",Font.BOLD,20);
+        g.setFont(f);
+        g.drawString(game.getPlayer().getPoints() + "",50,50);
 
+    }
+    public void drawText(Graphics g) {
+
+    }
     public void drawTitleScreen(Graphics g) {
         Image startScreen = new ImageIcon("Resources/GuiGameTitle.jpg").getImage();
         g.drawImage(startScreen, 0, 0, this);
