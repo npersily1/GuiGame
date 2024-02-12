@@ -18,8 +18,9 @@ public class Card {
         this.suit = suit;
         this.rank = rank;
         this.isRevealed = false;
-
-        image = new ImageIcon("Resources/Cards/" + cardNumber + ".png").getImage();
+        if(!(cardNumber == 0)) {
+            image = new ImageIcon("Resources/Cards/" + cardNumber + ".png").getImage();
+        }
     }
 
     //getters

@@ -29,7 +29,9 @@ public class GuiGame {
 
     public void play() {
         //intro / instructions
-        state++;
+//        if() {
+//            state++;
+//        }
         ///if there is a yes after a continue response
         printInstructions();
         //game loop
@@ -162,6 +164,7 @@ public class GuiGame {
     //deals use dealer and winner
     public void deal() {
         for (int i = 0; i < 2; i++) {
+
             player.getHand()[i] = deck.deal();
             player.getHand()[i].setRevealed(true);
             dealer.getHand()[i] = deck.deal();

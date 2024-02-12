@@ -39,8 +39,9 @@ public class Checker {
         this.p2[3] = middle[1];
         this.p2[4] = middle[2];
     }
+
     //returns player who won
-    public Player won () {
+    public Player won() {
         //assigns value to each players score
         p1score = assign(p1);
         p2score = assign(p2);
@@ -58,11 +59,11 @@ public class Checker {
     }
 
     //returns player who won using tiebreak rules
-    public Player tie () {
+    public Player tie() {
 
         while (getHighCard(p1) == getHighCard(p2)) {
-            p1[indexOf(p1, getHighCard(p1))] = null;
-            p2[indexOf(p2, getHighCard(p2))] = null;
+            p1[indexOf(p1, getHighCard(p1))] = new Card(0, null, null,0);
+            p2[indexOf(p2, getHighCard(p2))] = new Card(0, null, null,0);
         }
         if (getHighCard(p1) > getHighCard(p2)) {
             return p1ref;
@@ -72,7 +73,7 @@ public class Checker {
     }
 
     //index of for arrays
-    public int indexOf (Card[]hand,int point){
+    public int indexOf(Card[] hand, int point) {
         for (int i = 0; i < 5; i++) {
             if (hand[i].getPoint() == point) {
                 return i;
@@ -82,7 +83,7 @@ public class Checker {
     }
 
     // returns hand name based off of score
-    public String getHandName ( int score){
+    public String getHandName(int score) {
         if (COMBOS[score / 100].equals("High Card")) {
             return "High Card " + GuiGame.checkRoyal(score % 100);
         }
@@ -91,7 +92,7 @@ public class Checker {
     }
 
     //returns the point value for a hand
-    public int assign (Card[]hand){
+    public int assign(Card[] hand) {
         //set temp equal to all hands from rarest to least
         //if they have that hand return temp
         int temp = getStraightFlush(hand);
@@ -124,7 +125,7 @@ public class Checker {
     }
 
     //returns score for a hand with a flush 0 if they don't have one
-    public int flush (Card[]hand){
+    public int flush(Card[] hand) {
         //for every card but the last
         for (int i = 0; i < 4; i++) {
             //if they have a different suit
@@ -136,7 +137,7 @@ public class Checker {
     }
 
     //gets highcard point value in any hand
-    public int getHighCard (Card[]hand){
+    public int getHighCard(Card[] hand) {
 
         int max = 0;
         for (int i = 0; i < hand.length; i++) {
@@ -148,7 +149,7 @@ public class Checker {
     }
 
     //returns point value for a hand with a straight 0 if they dont have it
-    public int straight (Card[]hand){
+    public int straight(Card[] hand) {
         //put card points into array of ints
         int[] vals = new int[5];
         for (int i = 0; i < 5; i++) {
@@ -166,7 +167,7 @@ public class Checker {
     }
 
     //returns point value if they have three or four of a kind
-    public int numPair (Card[]hand){
+    public int numPair(Card[] hand) {
         //for the first three cards of a hand
         for (int i = 0; i < 3; i++) {
             int counter = 0;
@@ -190,7 +191,7 @@ public class Checker {
 
     //returns point value for a pair
     //takes into account two pair possibility
-    public int getPair (Card[]hand){
+    public int getPair(Card[] hand) {
         //representing point values of pairs
         int pair1 = 0;
         int pair2 = 0;
@@ -219,7 +220,7 @@ public class Checker {
 
     //returns pair value as long it is not equal to other
     //used for full house
-    public int getFullPair (Card[]hand,int other){
+    public int getFullPair(Card[] hand, int other) {
         int pair1 = 0;
         int pair2 = 0;
         for (int i = 0; i < 5; i++) {
@@ -241,7 +242,7 @@ public class Checker {
     }
 
     //returns points if they have a full house
-    public int getFullHouse (Card[]hand){
+    public int getFullHouse(Card[] hand) {
         //sets two componenets of a full house
         int three = numPair(hand);
         int two = getFullPair(hand, three % 100);
@@ -254,7 +255,7 @@ public class Checker {
     }
 
     //returns point value if they have a straight flush
-    public int getStraightFlush (Card[]hand){
+    public int getStraightFlush(Card[] hand) {
         //sets values for flush and straight flush
         int flush = flush(hand);
         int straight = straight(hand);

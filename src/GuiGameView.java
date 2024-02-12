@@ -1,15 +1,17 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
-public class GuiGameView extends JFrame {
+public class GuiGameView extends JFrame implements MouseListener {
+
 
     public static final String title = "HoldEm";
 
     public static final int WINDOW_WIDTH = 1000,
-            WINDOW_HEIGHT = 600,
-
-    X_PADDING = (WINDOW_WIDTH - (Card.CARD_WIDTH * 3)) / 2,
-            Y_PADDING = 40;
+                            WINDOW_HEIGHT = 600,
+                            X_PADDING = (WINDOW_WIDTH - (Card.CARD_WIDTH * 3)) / 2,
+                            Y_PADDING = 40;
 
     private GuiGame game;
 
@@ -51,14 +53,16 @@ public class GuiGameView extends JFrame {
             x += Card.CARD_WIDTH * 2;
         }
         g.setColor(Color.YELLOW);
-        Font f = new Font("Serif",Font.BOLD,20);
+        Font f = new Font("Serif", Font.BOLD, 20);
         g.setFont(f);
-        g.drawString(game.getPlayer().getPoints() + "",50,50);
+        g.drawString(game.getPlayer().getPoints() + "", 50, 50);
 
     }
+
     public void drawText(Graphics g) {
 
     }
+
     public void drawTitleScreen(Graphics g) {
         Image startScreen = new ImageIcon("Resources/GuiGameTitle.jpg").getImage();
         g.drawImage(startScreen, 0, 0, this);
@@ -66,5 +70,39 @@ public class GuiGameView extends JFrame {
 
     public void drawInstructions(Graphics g) {
 
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+
+        // For demo purposes only
+
+    }
+
+    @Override
+    // # 8: Required of a MouseListener
+    public void mouseReleased(MouseEvent e) {
+        // For demo purposes only
+        System.out.println("mouseReleased event handler executed.");
+    }
+
+    @Override
+    // # 9: Required of a MouseListener
+    public void mouseClicked(MouseEvent e) {
+
+        // For demo purposes only
+
+    }
+
+    public void mouseEntered(MouseEvent e) {
+        // For demo purposes only
+        System.out.println("mouseEntered event handler executed.");
+    }
+
+    @Override
+    // # 11: Required of a MouseListener
+    public void mouseExited(MouseEvent e) {
+        // For demo purposes only
+        System.out.println("mouseExited event handler executed.");
     }
 }
