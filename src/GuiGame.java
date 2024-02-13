@@ -1,9 +1,13 @@
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.Scanner;
 
 // Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
 // then press Enter. You can now see whitespace characters in your code.
-public class GuiGame {
-
+public class GuiGame implements MouseListener {
+    public static final Button CONTINUE = new Button(293, 490, 414, 110),
+            YES = new Button(717, 459, 108, 59),
+            NO = new Button(847, 459, 108, 53);
     private Deck deck;
     private Player player;
     private Player dealer;
@@ -12,6 +16,8 @@ public class GuiGame {
 
     private GuiGameView window;
     private int state;
+
+    private boolean yesNO;
 
     // Constructor
     public GuiGame(Player player, Player dealer) {
@@ -25,77 +31,83 @@ public class GuiGame {
         middle = new Card[3];
         s = new Scanner(System.in);
         window = new GuiGameView(this);
+        this.window.addMouseListener(this);
     }
 
     public void play() {
-        //intro / instructions
-//        if() {
-//            state++;
-//        }
-        ///if there is a yes after a continue response
-        printInstructions();
-        //game loop
-        boolean didFold = false;
-        state++;
-        while (player.getPoints() > 0) {
-            //deal player cards
-            int counter = 0;
-            this.deal();
-            //betting loop
-            for (int i = 0; i < 4; i++) {
-                window.repaint();
-                player.addPoints(-5);
-                this.printBoard(++counter);
-                didFold = willFold();
-                if (didFold) {
-                    break;
-                }
-                if(!(i == 3)) {
-                    middle[i].setRevealed(true);
-                }
-                else {
-                    dealer.getHand()[0].setRevealed(true);
-                    dealer.getHand()[1].setRevealed(true);
-                }
-            }
 
-            //end of game scenarios
-            boolean win = win();
-            printBoard(++counter);
-            if (!didFold && win) {
-                player.addPoints(50);
-                System.out.println("You win");
-            } else if (win) {
-                System.out.println("You would would have won");
-            } else {
-                System.out.println("You lost");
-            }
+        if (state == 2) {
             window.repaint();
-            if (!willContinue()) {
-                break;
-            }
-            reset();
+            deal();
+        } else if (state > 2 && state < 6) {
+            window.repaint();
+            player.addPoints(-5);
+            middle[state].setRevealed(true);
+
+
+        } else {
+            window.repaint();
+
+
+//            while (player.getPoints() > 0) {
+//                //deal player cards
+//
+//
+//                //betting loop
+//                for (int i = 0; i < 4; i++) {
+//                    window.repaint();
+//                    player.addPoints(-5);
+//                    this.printBoard(++counter);
+//
+//                    if (buttonClicked) {
+//                        break;
+//                    }
+//                    if (!(i == 3)) {
+//                        middle[i].setRevealed(true);
+//                    } else {
+//                        dealer.getHand()[0].setRevealed(true);
+//                        dealer.getHand()[1].setRevealed(true);
+//                    }
+//                }
+//
+//                //end of game scenarios
+//                boolean win = win();
+//                printBoard(++counter);
+//                if (!didFold && win) {
+//                    player.addPoints(50);
+//                    System.out.println("You win");
+//                } else if (win) {
+//                    System.out.println("You would would have won");
+//                } else {
+//                    System.out.println("You lost");
+//                }
+//                window.repaint();
+//                if (!willContinue()) {
+//                    break;
+//                }
+//                reset();
+//            }
         }
     }
 
     //returns true if the player wants to continue playing
-    public boolean willContinue() {
-        System.out.println("Do you want to continue playing");
-        String willContinue = s.nextLine();
-        switch (willContinue) {
-            case ("y"): {
-                return true;
-            }
-            case ("Y"): {
-                return true;
-            }
-            case ("Yes"): {
-                return true;
-            }
-        }
-        state = 0;
-        return false;
-    }
+//    public boolean willContinue() {
+//        System.out.println("Do you want to continue playing");
+//        String willContinue = s.nextLine();
+//        switch (willContinue) {
+//            case ("y"): {
+//                return true;
+//            }
+//            case ("Y"): {
+//                return true;
+//            }
+//            case ("Yes"): {
+//                return true;
+//            }
+//        }
+//        state = 0;
+//        return false;
+//    }
 
     //returns true if the player won
     public boolean win() {
@@ -105,19 +117,7 @@ public class GuiGame {
 
     //returns true if they want to fold
     public boolean willFold() {
-        System.out.println("Do you fold ");
-        String fold = s.nextLine();
-        switch (fold) {
-            case ("y"): {
-                return true;
-            }
-            case ("Y"): {
-                return true;
-            }
-            case ("Yes"): {
-                return true;
-            }
-        }
+
         return false;
     }
 
@@ -179,7 +179,7 @@ public class GuiGame {
     public void createDeck() {
         String[] ranks = new String[13];
         int[] points = new int[13];
-        String[] suits = { "Spades", "Hearts", "Diamonds", "Clubs"};
+        String[] suits = {"Spades", "Hearts", "Diamonds", "Clubs"};
         for (int i = 0; i < 13; i++) {
             String rank = checkRoyal(i + 2);
             ranks[i] = rank;
@@ -190,7 +190,7 @@ public class GuiGame {
 
     // checks if a number is greater than 10 and then returns corresponding special card name
     public static String checkRoyal(int num) {
-        if ( num > 1 && num < 11)
+        if (num > 1 && num < 11)
             return "" + num;
         if (num == 11)
             return "Jack";
@@ -240,15 +240,69 @@ public class GuiGame {
         return middle;
     }
 
+    public void setState(int state) {
+        this.state = state;
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+
+        // For demo purposes only
+
+    }
+
+    @Override
+    // # 8: Required of a MouseListener
+    public void mouseReleased(MouseEvent e) {
+        // For demo purposes only
+        System.out.println("mouseReleased event handler executed.");
+    }
+
+    @Override
+    // # 9: Required of a MouseListener
+    public void mouseClicked(MouseEvent e) {
+
+        if (state < 2) {
+            if (CONTINUE.isClicked(e.getX(), e.getY())) {
+                state += 1;
+                play();
+            }
+        } else {
+            if (YES.isClicked(e.getX(), e.getY())) {
+                state++;
+                play();
+            } else if (NO.isClicked(e.getX(), e.getY())) {
+                for (int i = 0; i < 3; i++) {
+                    middle[i].setRevealed(true);
+                }
+                dealer.getHand()[0].setRevealed(true);
+                dealer.getHand()[1].setRevealed(true);
+                state = 6;
+            }
+        }
+
+    }
+
+    public void mouseEntered(MouseEvent e) {
+        // For demo purposes only
+        System.out.println("mouseEntered event handler executed.");
+    }
+
+    @Override
+    // # 11: Required of a MouseListener
+    public void mouseExited(MouseEvent e) {
+        // For demo purposes only
+        System.out.println("mouseExited event handler executed.");
+    }
+
     //main function
     public static void main(String[] args) {
-        System.out.println("What is your name");
+        // System.out.println("What is your name");
         Scanner input = new Scanner(System.in);
-        Player player = new Player(input.nextLine());
+        Player player = new Player("player");
         Player dealer = new Player("dealer");
         GuiGame game = new GuiGame(player, dealer);
         //if yes on opening screen game.play;
-        game.play();
 
     }
 }

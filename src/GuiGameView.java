@@ -3,15 +3,17 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-public class GuiGameView extends JFrame implements MouseListener {
-
+public class GuiGameView extends JFrame {
 
     public static final String title = "HoldEm";
+    public static final Image MAIN_SCREEN = new ImageIcon("Resources/MainScreen.jpg").getImage(),
+            START_SCREEN = new ImageIcon("Resources/GuiGameTitle.jpg").getImage(),
+            INSTRUCTIONS = new ImageIcon("Resources/Instructions.jpg").getImage();
 
     public static final int WINDOW_WIDTH = 1000,
-                            WINDOW_HEIGHT = 600,
-                            X_PADDING = (WINDOW_WIDTH - (Card.CARD_WIDTH * 3)) / 2,
-                            Y_PADDING = 40;
+            WINDOW_HEIGHT = 600,
+            X_PADDING = (WINDOW_WIDTH - (Card.CARD_WIDTH * 3)) / 2,
+            Y_PADDING = 40;
 
     private GuiGame game;
 
@@ -25,8 +27,6 @@ public class GuiGameView extends JFrame implements MouseListener {
     }
 
     public void paint(Graphics g) {
-        g.setColor(Color.GREEN);
-        g.fillRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 
         if (game.getState() == 0) {
             drawTitleScreen(g);
@@ -36,7 +36,7 @@ public class GuiGameView extends JFrame implements MouseListener {
             drawInstructions(g);
             return;
         }
-
+        g.drawImage(MAIN_SCREEN, 0, 0, this);
         //Draws player and dealer cards
         int x = X_PADDING;
         int gameY = WINDOW_HEIGHT - Y_PADDING - Card.CARD_HEIGHT + getInsets().top;
@@ -64,45 +64,11 @@ public class GuiGameView extends JFrame implements MouseListener {
     }
 
     public void drawTitleScreen(Graphics g) {
-        Image startScreen = new ImageIcon("Resources/GuiGameTitle.jpg").getImage();
-        g.drawImage(startScreen, 0, 0, this);
+        g.drawImage(START_SCREEN, 0, 0, this);
     }
 
     public void drawInstructions(Graphics g) {
-
+        g.drawImage(INSTRUCTIONS, 0, 0, this);
     }
 
-    @Override
-    public void mousePressed(MouseEvent e) {
-
-        // For demo purposes only
-
-    }
-
-    @Override
-    // # 8: Required of a MouseListener
-    public void mouseReleased(MouseEvent e) {
-        // For demo purposes only
-        System.out.println("mouseReleased event handler executed.");
-    }
-
-    @Override
-    // # 9: Required of a MouseListener
-    public void mouseClicked(MouseEvent e) {
-
-        // For demo purposes only
-
-    }
-
-    public void mouseEntered(MouseEvent e) {
-        // For demo purposes only
-        System.out.println("mouseEntered event handler executed.");
-    }
-
-    @Override
-    // # 11: Required of a MouseListener
-    public void mouseExited(MouseEvent e) {
-        // For demo purposes only
-        System.out.println("mouseExited event handler executed.");
-    }
 }
