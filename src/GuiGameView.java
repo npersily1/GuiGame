@@ -6,14 +6,9 @@ import java.awt.event.MouseListener;
 public class GuiGameView extends JFrame {
 
     public static final String title = "HoldEm";
-    public static final Image MAIN_SCREEN = new ImageIcon("Resources/MainScreen.jpg").getImage(),
-            START_SCREEN = new ImageIcon("Resources/GuiGameTitle.jpg").getImage(),
-            INSTRUCTIONS = new ImageIcon("Resources/Instructions.jpg").getImage();
+    public static final Image MAIN_SCREEN = new ImageIcon("Resources/MainScreen.jpg").getImage(), START_SCREEN = new ImageIcon("Resources/GuiGameTitle.jpg").getImage(), INSTRUCTIONS = new ImageIcon("Resources/Instructions.jpg").getImage();
 
-    public static final int WINDOW_WIDTH = 1000,
-            WINDOW_HEIGHT = 600,
-            X_PADDING = (WINDOW_WIDTH - (Card.CARD_WIDTH * 3)) / 2,
-            Y_PADDING = 40;
+    public static final int WINDOW_WIDTH = 1000, WINDOW_HEIGHT = 600, X_PADDING = (WINDOW_WIDTH - (Card.CARD_WIDTH * 3)) / 2, Y_PADDING = 40;
 
     private GuiGame game;
 
@@ -28,11 +23,11 @@ public class GuiGameView extends JFrame {
 
     public void paint(Graphics g) {
 
-        if (game.getState() == 0) {
+        if (game.getState() == GuiGame.MAIN_SCREEN) {
             drawTitleScreen(g);
             return;
         }
-        if (game.getState() == 1) {
+        if (game.getState() == GuiGame.INSTRUCTIONS_SCREEN) {
             drawInstructions(g);
             return;
         }
@@ -55,12 +50,37 @@ public class GuiGameView extends JFrame {
         g.setColor(Color.YELLOW);
         Font f = new Font("Serif", Font.BOLD, 20);
         g.setFont(f);
-        g.drawString(game.getPlayer().getPoints() + "", 50, 50);
+        g.drawString(game.getPlayer().getPoints() + "", 100, 75);
+        drawText(g);
 
     }
 
     public void drawText(Graphics g) {
 
+        if(game.getState() < GuiGame.END_PHASE) {
+            g.drawString("Do you fold", 800, 400);
+        }
+        else if(game.getState() == GuiGame.END_PHASE) {
+            if(game.win()) {
+                g.drawString("You Won", 800, 400);
+                g.drawString("Do you want to continue", 750, 450);
+                game.addScore();
+            }
+            else {
+                g.drawString("You Lost", 800, 400);
+                g.drawString("Do you want to continue", 750, 450);
+            }
+        }
+        else if(game.getState() == GuiGame.FOLD_PHASE) {
+            if(game.win()) {
+                g.drawString("You would have Won", 800, 400);
+                g.drawString("Do you want to continue", 750, 450);
+            }
+            else {
+                g.drawString("You Lost", 800, 400);
+                g.drawString("Do you want to continue", 750, 450);
+            }
+        }
     }
 
     public void drawTitleScreen(Graphics g) {

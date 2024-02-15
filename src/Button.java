@@ -11,6 +11,6 @@ public class Button {
 
     public boolean isClicked(int mouseX, int mouseY) {
 
-        return (mouseX > x && mouseX < x + width && mouseY > y && mouseY < y + height);
+        return ((mouseX > x && mouseX < x + width) && (mouseY > y && mouseY < y + height));
     }
 }

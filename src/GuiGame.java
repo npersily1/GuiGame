@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Scanner;
@@ -6,162 +7,64 @@ import java.util.Scanner;
 // then press Enter. You can now see whitespace characters in your code.
 public class GuiGame implements MouseListener {
     public static final Button CONTINUE = new Button(293, 490, 414, 110),
-            YES = new Button(717, 459, 108, 59),
-            NO = new Button(847, 459, 108, 53);
+            NO = new Button(717, 459, 108, 53),
+            YES = new Button(847, 459, 108, 59);
+    public static final int MAIN_SCREEN = 0,
+            INSTRUCTIONS_SCREEN = 1, FIRST_PHASE = 2, END_PHASE = 6, FOLD_PHASE = 7;
     private Deck deck;
     private Player player;
     private Player dealer;
     private Card[] middle;
-    private Scanner s;
-
     private GuiGameView window;
     private int state;
-
-    private boolean yesNO;
 
     // Constructor
     public GuiGame(Player player, Player dealer) {
 
         state = 0;
+
         this.player = player;
         player.setPoints(110);
         this.dealer = dealer;
         this.createDeck();
         deck.shuffle();
         middle = new Card[3];
-        s = new Scanner(System.in);
         window = new GuiGameView(this);
         this.window.addMouseListener(this);
     }
 
     public void play() {
-
-        if (state == 2) {
+        // This case goes to instructions screen and prints deck
+        if (state == INSTRUCTIONS_SCREEN) {
             window.repaint();
             deal();
-        } else if (state > 2 && state < 6) {
+        } else if (state > INSTRUCTIONS_SCREEN && state < END_PHASE) {
+            // Draws screen then reveals a card
             window.repaint();
             player.addPoints(-5);
-            middle[state].setRevealed(true);
-
 
         } else {
+            reveal();
             window.repaint();
-
-
-//            while (player.getPoints() > 0) {
-//                //deal player cards
-//
-//
-//                //betting loop
-//                for (int i = 0; i < 4; i++) {
-//                    window.repaint();
-//                    player.addPoints(-5);
-//                    this.printBoard(++counter);
-//
-//                    if (buttonClicked) {
-//                        break;
-//                    }
-//                    if (!(i == 3)) {
-//                        middle[i].setRevealed(true);
-//                    } else {
-//                        dealer.getHand()[0].setRevealed(true);
-//                        dealer.getHand()[1].setRevealed(true);
-//                    }
-//                }
-//
-//                //end of game scenarios
-//                boolean win = win();
-//                printBoard(++counter);
-//                if (!didFold && win) {
-//                    player.addPoints(50);
-//                    System.out.println("You win");
-//                } else if (win) {
-//                    System.out.println("You would would have won");
-//                } else {
-//                    System.out.println("You lost");
-//                }
-//                window.repaint();
-//                if (!willContinue()) {
-//                    break;
-//                }
-//                reset();
-//            }
         }
     }
 
-    //returns true if the player wants to continue playing
-//    public boolean willContinue() {
-//        System.out.println("Do you want to continue playing");
-//        String willContinue = s.nextLine();
-//        switch (willContinue) {
-//            case ("y"): {
-//                return true;
-//            }
-//            case ("Y"): {
-//                return true;
-//            }
-//            case ("Yes"): {
-//                return true;
-//            }
-//        }
-//        state = 0;
-//        return false;
-//    }
+    // Sets all cards in play to be revealed
+    public void reveal() {
+        for (int i = 0; i < 2; i++) {
+            middle[i].setRevealed(true);
+            dealer.getHand()[i].setRevealed(true);
+        }
+        middle[2].setRevealed(true);
+    }
 
-    //returns true if the player won
+    // Returns true if the player won
     public boolean win() {
         Checker c = new Checker(middle, player, dealer);
         return c.won() == player;
     }
 
-    //returns true if they want to fold
-    public boolean willFold() {
-
-        return false;
-    }
-
-    //prints board with neccesary elements hidden based off of counter
-    public void printBoard(int counter) {
-
-        if (counter == 5) {
-            System.out.println(player + "  " + player.getHandName());
-
-            this.printMiddle(counter);
-            System.out.println("dealer's cards  " + dealer.getHand()[0] + "       " + dealer.getHand()[1] + " " + dealer.getHandName());
-            return;
-        }
-        System.out.println(player);
-        this.printMiddle(counter);
-        System.out.println("dealer's cards  ___ ___");
-
-    }
-
-    //prints correct amount of middle three cards based on counter
-    public void printMiddle(int counter) {
-        System.out.println("Center Cards");
-        if (counter == 1) {
-            System.out.println("___    ___    ___");
-        } else if (counter == 2) {
-            for (int i = 0; i < 1; i++) {
-                System.out.print(middle[i] + "  ");
-            }
-            System.out.println("    ___     ___");
-        } else if (counter == 3) {
-            for (int i = 0; i < 2; i++) {
-                System.out.print(middle[i] + "   ");
-            }
-
-            System.out.println("___");
-        } else {
-            for (int i = 0; i < 3; i++) {
-                System.out.print(middle[i] + "    ");
-            }
-            System.out.println();
-        }
-    }
-
-    //deals use dealer and winner
+    // Deals user, dealer and middle
     public void deal() {
         for (int i = 0; i < 2; i++) {
 
@@ -175,7 +78,7 @@ public class GuiGame implements MouseListener {
 
     }
 
-    // creates complete 52 card deck with ace being a high value
+    // Creates complete 52 card deck with ace being a high value
     public void createDeck() {
         String[] ranks = new String[13];
         int[] points = new int[13];
@@ -188,7 +91,7 @@ public class GuiGame implements MouseListener {
         deck = new Deck(points, suits, ranks);
     }
 
-    // checks if a number is greater than 10 and then returns corresponding special card name
+    // Checks if a number is greater than 10 and then returns corresponding special card name
     public static String checkRoyal(int num) {
         if (num > 1 && num < 11)
             return "" + num;
@@ -203,27 +106,29 @@ public class GuiGame implements MouseListener {
 
     }
 
-    //resets hand middl3 and cardsleft
+    // Resets hands, middle, and reshuffles the deck, and then deals
     public void reset() {
         for (int i = 0; i < 2; i++) {
+            player.getHand()[i].setRevealed(false);
             player.getHand()[i] = null;
+            dealer.getHand()[i].setRevealed(false);
             dealer.getHand()[i] = null;
+            middle[i].setRevealed(false);
             middle[i] = null;
         }
+        middle[2].setRevealed(false);
         middle[2] = null;
         deck.reset();
         deck.shuffle();
+        this.deal();
+        state = FIRST_PHASE;
+        window.repaint();
+    }
+    public void addScore() {
+        player.setPoints(player.getPoints() + 20);
     }
 
-    //prints intro
-    public void printInstructions() {
-        System.out.println("Welcome to Noah's version of Holdem");
-        System.out.println("The main difference is that there is only three cards in the center");
-        System.out.println("Each round if you do not fold then five points will be deducted from your total");
-        System.out.println("If you win you will make double what is put in");
-        System.out.println("Good Luck");
-    }
-
+    // Various getters and setters for the front end
     public Player getPlayer() {
         return player;
     }
@@ -247,58 +152,66 @@ public class GuiGame implements MouseListener {
     @Override
     public void mousePressed(MouseEvent e) {
 
-        // For demo purposes only
+        if (state < FIRST_PHASE) {
+            if (CONTINUE.isClicked(e.getX(), e.getY())) {
+                System.out.println("continue clickedd");
+                state++;
+                play();
+            }
+        } else {
+            if (NO.isClicked(e.getX(), e.getY())) {
+                System.out.println("no clickedd");
+                if(state < END_PHASE - 1) {
+                    middle[state - FIRST_PHASE].setRevealed(true);
 
+                }
+                state++;
+                if (state >= FOLD_PHASE) {
+                    state = MAIN_SCREEN;
+                }
+
+                play();
+            } else if (YES.isClicked(e.getX(), e.getY())) {
+                if (state >= END_PHASE) {
+                    reset();
+                    return;
+                }
+                System.out.println("yes clickedd");
+                reveal();
+                state = FOLD_PHASE;
+                window.repaint();
+            }
+        }
     }
 
     @Override
     // # 8: Required of a MouseListener
     public void mouseReleased(MouseEvent e) {
         // For demo purposes only
-        System.out.println("mouseReleased event handler executed.");
+        //   System.out.println("mouseReleased event handler executed.");
     }
 
     @Override
     // # 9: Required of a MouseListener
     public void mouseClicked(MouseEvent e) {
 
-        if (state < 2) {
-            if (CONTINUE.isClicked(e.getX(), e.getY())) {
-                state += 1;
-                play();
-            }
-        } else {
-            if (YES.isClicked(e.getX(), e.getY())) {
-                state++;
-                play();
-            } else if (NO.isClicked(e.getX(), e.getY())) {
-                for (int i = 0; i < 3; i++) {
-                    middle[i].setRevealed(true);
-                }
-                dealer.getHand()[0].setRevealed(true);
-                dealer.getHand()[1].setRevealed(true);
-                state = 6;
-            }
-        }
-
     }
 
     public void mouseEntered(MouseEvent e) {
         // For demo purposes only
-        System.out.println("mouseEntered event handler executed.");
+        // System.out.println("mouseEntered event handler executed.");
     }
 
     @Override
     // # 11: Required of a MouseListener
     public void mouseExited(MouseEvent e) {
         // For demo purposes only
-        System.out.println("mouseExited event handler executed.");
+        //  System.out.println("mouseExited event handler executed.");
     }
 
     //main function
     public static void main(String[] args) {
-        // System.out.println("What is your name");
-        Scanner input = new Scanner(System.in);
+
         Player player = new Player("player");
         Player dealer = new Player("dealer");
         GuiGame game = new GuiGame(player, dealer);
