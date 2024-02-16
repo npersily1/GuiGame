@@ -1,16 +1,19 @@
-import javax.swing.*;
+
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.Scanner;
 
-// Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
-// then press Enter. You can now see whitespace characters in your code.
+
+// Noah Persily GuiGame
 public class GuiGame implements MouseListener {
     public static final Button CONTINUE = new Button(293, 490, 414, 110),
             NO = new Button(717, 459, 108, 53),
             YES = new Button(847, 459, 108, 59);
-    public static final int MAIN_SCREEN = 0,
-            INSTRUCTIONS_SCREEN = 1, FIRST_PHASE = 2, END_PHASE = 6, FOLD_PHASE = 7;
+    public static final int TITLE_SCREEN = 0,
+            INSTRUCTIONS_SCREEN = 1,
+            FIRST_PHASE = 2,
+            END_PHASE = 6,
+            FOLD_PHASE = 7;
+    public static final int WIN_AMOUNT = 40;
     private Deck deck;
     private Player player;
     private Player dealer;
@@ -22,13 +25,15 @@ public class GuiGame implements MouseListener {
     public GuiGame(Player player, Player dealer) {
 
         state = 0;
-
+        // Handles list of cards
         this.player = player;
-        player.setPoints(110);
+        player.setPoints(100);
         this.dealer = dealer;
+        middle = new Card[3];
+        // Creates shuffled deck
         this.createDeck();
         deck.shuffle();
-        middle = new Card[3];
+        // Handles front end
         window = new GuiGameView(this);
         this.window.addMouseListener(this);
     }
@@ -39,12 +44,11 @@ public class GuiGame implements MouseListener {
             window.repaint();
             deal();
         } else if (state > INSTRUCTIONS_SCREEN && state < END_PHASE) {
-            // Draws screen then reveals a card
+            // Draws screen then adjusts points
             window.repaint();
             player.addPoints(-5);
 
         } else {
-            reveal();
             window.repaint();
         }
     }
@@ -108,6 +112,7 @@ public class GuiGame implements MouseListener {
 
     // Resets hands, middle, and reshuffles the deck, and then deals
     public void reset() {
+        // Resets value for a card then removes it from their hand
         for (int i = 0; i < 2; i++) {
             player.getHand()[i].setRevealed(false);
             player.getHand()[i] = null;
@@ -118,17 +123,21 @@ public class GuiGame implements MouseListener {
         }
         middle[2].setRevealed(false);
         middle[2] = null;
+
+        // Redeals, resets phase and repaints
         deck.reset();
         deck.shuffle();
         this.deal();
         state = FIRST_PHASE;
         window.repaint();
     }
+
+    // Increments score a fixed amount
     public void addScore() {
-        player.setPoints(player.getPoints() + 20);
+        player.setPoints(player.getPoints() + WIN_AMOUNT);
     }
 
-    // Various getters and setters for the front end
+    // Getters and setters 
     public Player getPlayer() {
         return player;
     }
@@ -145,29 +154,24 @@ public class GuiGame implements MouseListener {
         return middle;
     }
 
-    public void setState(int state) {
-        this.state = state;
-    }
-
     @Override
     public void mousePressed(MouseEvent e) {
 
         if (state < FIRST_PHASE) {
             if (CONTINUE.isClicked(e.getX(), e.getY())) {
-                System.out.println("continue clickedd");
+                
                 state++;
                 play();
             }
         } else {
             if (NO.isClicked(e.getX(), e.getY())) {
-                System.out.println("no clickedd");
-                if(state < END_PHASE - 1) {
+                if (state < END_PHASE - 1) {
                     middle[state - FIRST_PHASE].setRevealed(true);
 
                 }
                 state++;
                 if (state >= FOLD_PHASE) {
-                    state = MAIN_SCREEN;
+                    state = TITLE_SCREEN;
                 }
 
                 play();
@@ -176,37 +180,29 @@ public class GuiGame implements MouseListener {
                     reset();
                     return;
                 }
-                System.out.println("yes clickedd");
                 reveal();
                 state = FOLD_PHASE;
                 window.repaint();
             }
         }
     }
-
+    // Methods required to implement mouse listener
     @Override
-    // # 8: Required of a MouseListener
+
     public void mouseReleased(MouseEvent e) {
-        // For demo purposes only
-        //   System.out.println("mouseReleased event handler executed.");
     }
 
     @Override
-    // # 9: Required of a MouseListener
-    public void mouseClicked(MouseEvent e) {
 
+    public void mouseClicked(MouseEvent e) {
     }
 
     public void mouseEntered(MouseEvent e) {
-        // For demo purposes only
-        // System.out.println("mouseEntered event handler executed.");
     }
 
     @Override
-    // # 11: Required of a MouseListener
+
     public void mouseExited(MouseEvent e) {
-        // For demo purposes only
-        //  System.out.println("mouseExited event handler executed.");
     }
 
     //main function

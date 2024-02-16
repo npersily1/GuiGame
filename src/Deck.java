@@ -1,9 +1,10 @@
 import java.util.ArrayList;
 
 public class Deck {
+    //Noah Persily GuiGame
     private final ArrayList<Card> deck;
     private int cardsLeft;
-
+    // Defaults constructor
     public Deck(int[] point, String[] suit, String[] rank) {
         deck = new ArrayList<Card>();
         int count = 5;
@@ -20,12 +21,12 @@ public class Deck {
         return !(cardsLeft > 0);
     }
 
-    //getter
+    // Getter
     public int getCardsLeft() {
         return cardsLeft;
     }
 
-    // deals
+    // Deals a single card
     public Card deal() {
         if (deck.isEmpty()) {
             return null;
@@ -37,7 +38,7 @@ public class Deck {
 
     }
 
-    //random shuffle
+    // Random shuffle
     public void shuffle() {
         for (int i = cardsLeft - 1; i >= 0; i--) {
             int r = (int) (Math.random() * i);
@@ -49,7 +50,7 @@ public class Deck {
 
     }
 
-    //reset deck
+    // Resets deck
     public void reset() {
         cardsLeft = 52;
         for (int i = 0; i < 52; i++) {

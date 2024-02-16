@@ -25,8 +25,7 @@ public class Checker {
         this.p2 = new Card[5];
         p1ref = p1;
         p2ref = p2;
-        //fills arrays with hands and middle
-
+        // Fills arrays with hands and middle
         this.p1[0] = p1.getHand()[0];
         this.p1[1] = p1.getHand()[1];
         this.p1[2] = middle[0];
@@ -40,15 +39,15 @@ public class Checker {
         this.p2[4] = middle[2];
     }
 
-    //returns player who won
+    // Returns player who won
     public Player won() {
-        //assigns value to each players score
+        // Assigns value to each players score
         p1score = assign(p1);
         p2score = assign(p2);
-        //sets hand name based on score
+        // Sets hand name based on score
         p1ref.setHandName(this.getHandName(p1score));
         p2ref.setHandName(this.getHandName(p2score));
-        //account for all cases
+        // Account for all cases
         if (p1score > p2score) {
             return p1ref;
         } else if (p1score < p2score) {
@@ -58,13 +57,15 @@ public class Checker {
         }
     }
 
-    //returns player who won using tiebreak rules
+    // Returns player who won using tiebreak rules
     public Player tie() {
-
+        // While they still have the same high card
         while (getHighCard(p1) == getHighCard(p2)) {
-            p1[indexOf(p1, getHighCard(p1))] = new Card(0, null, null,0);
-            p2[indexOf(p2, getHighCard(p2))] = new Card(0, null, null,0);
+            // Change that card to a new card worth 0
+            p1[indexOf(p1, getHighCard(p1))] = new Card(0, null, null, 0);
+            p2[indexOf(p2, getHighCard(p2))] = new Card(0, null, null, 0);
         }
+        // Return the winner
         if (getHighCard(p1) > getHighCard(p2)) {
             return p1ref;
         }
@@ -72,7 +73,7 @@ public class Checker {
 
     }
 
-    //index of for arrays
+    // Index of for arrays
     public int indexOf(Card[] hand, int point) {
         for (int i = 0; i < 5; i++) {
             if (hand[i].getPoint() == point) {
@@ -82,7 +83,7 @@ public class Checker {
         return 0;
     }
 
-    // returns hand name based off of score
+    // Eeturns hand name based off of score
     public String getHandName(int score) {
         if (COMBOS[score / 100].equals("High Card")) {
             return "High Card " + GuiGame.checkRoyal(score % 100);
@@ -91,10 +92,10 @@ public class Checker {
         return COMBOS[score / 100] + " with a high card " + GuiGame.checkRoyal(score % 100);
     }
 
-    //returns the point value for a hand
+    // Returns the point value for a hand
     public int assign(Card[] hand) {
-        //set temp equal to all hands from rarest to least
-        //if they have that hand return temp
+        // Set temp equal to all hands from rarest to least
+        // If they have that hand return temp
         int temp = getStraightFlush(hand);
         if (temp / 100 != 0) {
             return temp;
@@ -124,7 +125,7 @@ public class Checker {
         }
     }
 
-    //returns score for a hand with a flush 0 if they don't have one
+    // Returns score for a hand with a flush, 0 if they don't have one
     public int flush(Card[] hand) {
         //for every card but the last
         for (int i = 0; i < 4; i++) {
@@ -136,7 +137,7 @@ public class Checker {
         return FLUSH + getHighCard(hand);
     }
 
-    //gets highcard point value in any hand
+    // Gets highcard point value in any hand
     public int getHighCard(Card[] hand) {
 
         int max = 0;
@@ -148,7 +149,7 @@ public class Checker {
         return max;
     }
 
-    //returns point value for a hand with a straight 0 if they dont have it
+    // Returns point value for a hand with a straight 0 if they dont have it
     public int straight(Card[] hand) {
         //put card points into array of ints
         int[] vals = new int[5];
@@ -157,7 +158,7 @@ public class Checker {
         }
         //sort
         Arrays.sort(vals);
-        //check if each value + one is equal to the next value
+        //check if each value plus one is equal to the next value
         for (int i = 0; i < 4; i++) {
             if (vals[i] + 1 != vals[i + 1]) {
                 return 0;
@@ -166,19 +167,19 @@ public class Checker {
         return STRAIGHT + getHighCard(hand);
     }
 
-    //returns point value if they have three or four of a kind
+    // Returns point value if they have three or four of a kind
     public int numPair(Card[] hand) {
-        //for the first three cards of a hand
+        // For the first three cards of a hand
         for (int i = 0; i < 3; i++) {
             int counter = 0;
-            //for each card after card that is currently being iterated on
+            // For each card after card that is currently being iterated on
             for (int j = i; j < 5; j++) {
-                //if the cards are the same rank
+                // If the cards are the same rank
                 if (hand[i].getPoint() == hand[j].getPoint()) {
                     counter++;
                 }
             }
-            //check to see if there is four or three of a kind
+            // Check to see if there is four or three of a kind
             if (counter == 3) {
                 return THREE + hand[i].getPoint();
             }
@@ -189,38 +190,38 @@ public class Checker {
         return 0;
     }
 
-    //returns point value for a pair
-    //takes into account two pair possibility
+    // Returns point value for a pair
+    //Takes into account two different pairs
     public int getPair(Card[] hand) {
-        //representing point values of pairs
+        // Representing point values of pairs
         int pair1 = 0;
         int pair2 = 0;
-        //for each card
+        // For each card
         for (int i = 0; i < 4; i++) {
-            //for each card after current card
+            // For each card after current card
             for (int j = i + 1; j < 5; j++) {
-                //if the 2 cards being iterated on have the same point value set pair 1 and break
+                // If the 2 cards being iterated on have the same point value set pair 1 and break
                 if (pair1 == 0 && hand[i].getPoint() == hand[j].getPoint()) {
                     pair1 = hand[j].getPoint();
                     break;
                 }
-                //if he 2 cards being iterated on have the same point value set pair 2 and break
+                // Uf he 2 cards being iterated on have the same point value set pair 2 and break
                 if (hand[i].getPoint() == hand[j].getPoint()) {
                     pair2 = hand[j].getPoint();
                     break;
                 }
             }
         }
-        //if there was a pair return the points for the greater one
+        // Uf there was a pair return the points for the greater one
         if (pair1 != 0) {
             return PAIR + Math.max(pair1, pair2);
         }
         return 0;
     }
 
-    //returns pair value as long it is not equal to other
-    //used for full house
-    public int getFullPair(Card[] hand, int other) {
+    // Returns pair value as long it is not equal to other
+    // Should only be used by full house method so it should be private
+    private int getFullPair(Card[] hand, int other) {
         int pair1 = 0;
         int pair2 = 0;
         for (int i = 0; i < 5; i++) {
@@ -241,9 +242,9 @@ public class Checker {
         return 0;
     }
 
-    //returns points if they have a full house
+    // Returns points if they have a full house
     public int getFullHouse(Card[] hand) {
-        //sets two componenets of a full house
+        // Sets two componenets of a full house
         int three = numPair(hand);
         int two = getFullPair(hand, three % 100);
         //if they have a full house
@@ -254,15 +255,14 @@ public class Checker {
         return 0;
     }
 
-    //returns point value if they have a straight flush
+    // Returns point value if they have a straight flush
     public int getStraightFlush(Card[] hand) {
-        //sets values for flush and straight flush
+        // Sets values for flush and straight flush
         int flush = flush(hand);
         int straight = straight(hand);
-        //if they have a straight flush
+        // If they have a straight flush
         if (flush / 100 == 5)
             if (straight / 100 == 6) {
-                //not redundant because of truncation
                 return STRAIGHTFLUSH + straight % 100;
             }
         return 0;

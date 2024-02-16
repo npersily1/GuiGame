@@ -1,29 +1,30 @@
 import javax.swing.*;
 import java.awt.*;
 
-
 public class Card {
-    //
+    // Noah Persily GuiGame
     public static final Image BACK = new ImageIcon("Resources/Cards/back.png").getImage();
     public static final int CARD_HEIGHT = 150,
-                            CARD_WIDTH = 100;
+            CARD_WIDTH = 100;
     private int point;
     private String suit;
     private String rank;
     private Image image;
     private boolean isRevealed;
 
+    // Default constructor
     public Card(int point, String suit, String rank, int cardNumber) {
         this.point = point;
         this.suit = suit;
         this.rank = rank;
         this.isRevealed = false;
-        if(!(cardNumber == 0)) {
+        // Assigns number to cards
+        if (!(cardNumber == 0)) {
             image = new ImageIcon("Resources/Cards/" + cardNumber + ".png").getImage();
         }
     }
 
-    //getters
+    // Getters
     public int getPoint() {
         return point;
     }
@@ -36,7 +37,7 @@ public class Card {
         return rank;
     }
 
-    //setters
+    // Setters
     public void setPoint(int point) {
         this.point = point;
     }
@@ -49,10 +50,6 @@ public class Card {
         this.rank = rank;
     }
 
-    public String toString() {
-        return rank + " of " + suit;
-    }
-
     public boolean isRevealed() {
         return isRevealed;
     }
@@ -61,11 +58,18 @@ public class Card {
         isRevealed = revealed;
     }
 
+    public String toString() {
+        return rank + " of " + suit;
+    }
+
+    // Puts image in window at specified coordinate
     public void draw(Graphics g, int x, int y, GuiGameView window) {
+        // If face up draw
         if (isRevealed) {
             g.drawImage(image, x, y, CARD_WIDTH, CARD_HEIGHT, window);
             return;
         }
+        // Draw back of card
         g.drawImage(BACK, x, y, CARD_WIDTH, CARD_HEIGHT, window);
     }
 }

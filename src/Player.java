@@ -1,6 +1,5 @@
-import java.util.ArrayList;
-
 public class Player {
+    //Noah Persily GuiGame
     private Card[] hand;
     private int points;
     private String name;
@@ -14,16 +13,7 @@ public class Player {
         hand = new Card[2];
     }
 
-    // constructor specified to make but is not used
-//    public Player(String name, ArrayList<Card> oldHand ) {
-//        this.name = name;
-//        this.points = 0;
-//        for (Card c : oldHand) {
-//            hand.add(c);
-//        }
-//        handName = "";
-//    }
-//getters
+    // Getters and setters
     public String getHandName() {
         return handName;
     }
@@ -43,8 +33,6 @@ public class Player {
     public String getName() {
         return name;
     }
-
-    // Setter
     public void setPoints(int points) {
         this.points = points;
     }
@@ -52,7 +40,6 @@ public class Player {
     public void addPoints(int increment) {
         this.points += increment;
     }
-
 
     public String toString() {
         String info = name + " has " + points + " points \n" +
