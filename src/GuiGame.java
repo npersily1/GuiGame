@@ -1,19 +1,17 @@
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-
-
 // Noah Persily GuiGame
 public class GuiGame implements MouseListener {
     public static final Button CONTINUE = new Button(293, 490, 414, 110),
             NO = new Button(717, 459, 108, 53),
             YES = new Button(847, 459, 108, 59);
-    public static final int TITLE_SCREEN = 0,
+    public static final int MAIN_SCREEN = 0,
             INSTRUCTIONS_SCREEN = 1,
             FIRST_PHASE = 2,
             END_PHASE = 6,
-            FOLD_PHASE = 7;
-    public static final int WIN_AMOUNT = 40;
+            FOLD_PHASE = 7,
+            SCORE_INCREMENT = 50;
     private Deck deck;
     private Player player;
     private Player dealer;
@@ -25,15 +23,16 @@ public class GuiGame implements MouseListener {
     public GuiGame(Player player, Player dealer) {
 
         state = 0;
-        // Handles list of cards
+        // Creates Players
         this.player = player;
-        player.setPoints(100);
+        player.setPoints(110);
         this.dealer = dealer;
-        middle = new Card[3];
-        // Creates shuffled deck
+        // Creates deck
         this.createDeck();
         deck.shuffle();
-        // Handles front end
+
+        middle = new Card[3];
+        // Handles Front-end
         window = new GuiGameView(this);
         this.window.addMouseListener(this);
     }
@@ -44,11 +43,13 @@ public class GuiGame implements MouseListener {
             window.repaint();
             deal();
         } else if (state > INSTRUCTIONS_SCREEN && state < END_PHASE) {
-            // Draws screen then adjusts points
+            // Draws screen then reveals a card
             window.repaint();
             player.addPoints(-5);
 
         } else {
+            // Reveals every card and repaints
+            reveal();
             window.repaint();
         }
     }
@@ -110,9 +111,9 @@ public class GuiGame implements MouseListener {
 
     }
 
-    // Resets hands, middle, and reshuffles the deck, and then deals
+    // Resets hands, middle, and reshuffles the deck, and then deals. Makes sure to reset face down
     public void reset() {
-        // Resets value for a card then removes it from their hand
+
         for (int i = 0; i < 2; i++) {
             player.getHand()[i].setRevealed(false);
             player.getHand()[i] = null;
@@ -123,21 +124,17 @@ public class GuiGame implements MouseListener {
         }
         middle[2].setRevealed(false);
         middle[2] = null;
-
-        // Redeals, resets phase and repaints
         deck.reset();
         deck.shuffle();
         this.deal();
         state = FIRST_PHASE;
         window.repaint();
     }
-
-    // Increments score a fixed amount
     public void addScore() {
-        player.setPoints(player.getPoints() + WIN_AMOUNT);
+        player.setPoints(player.getPoints() + SCORE_INCREMENT);
     }
 
-    // Getters and setters 
+    // Various getters and setters for the front end
     public Player getPlayer() {
         return player;
     }
@@ -154,55 +151,75 @@ public class GuiGame implements MouseListener {
         return middle;
     }
 
+    public void setState(int state) {
+        this.state = state;
+    }
+
     @Override
     public void mousePressed(MouseEvent e) {
-
+        // If the game has not started yet
         if (state < FIRST_PHASE) {
+            // If continue is clicked continue
             if (CONTINUE.isClicked(e.getX(), e.getY())) {
-                
+                System.out.println("continue clicked");
                 state++;
                 play();
             }
         } else {
+            // If no is clicked
             if (NO.isClicked(e.getX(), e.getY())) {
-                if (state < END_PHASE - 1) {
+                System.out.println("no clicked");
+                //  If we are still in the first three round
+                if(state < END_PHASE - 1) {
+                    // Reveal a middle card
                     middle[state - FIRST_PHASE].setRevealed(true);
 
                 }
                 state++;
+                // If they don't want to continue
                 if (state >= FOLD_PHASE) {
-                    state = TITLE_SCREEN;
+                    // Send them to the homescreen
+                    state = MAIN_SCREEN;
                 }
 
                 play();
+              // If yes is clicked
             } else if (YES.isClicked(e.getX(), e.getY())) {
+                // If they want to continue
                 if (state >= END_PHASE) {
                     reset();
                     return;
                 }
+                System.out.println("yes clicked");
+                // Once they fold reveal every card, set state, and repaint
                 reveal();
                 state = FOLD_PHASE;
                 window.repaint();
             }
         }
     }
-    // Methods required to implement mouse listener
-    @Override
 
+    @Override
+    // # 8: Required of a MouseListener
     public void mouseReleased(MouseEvent e) {
+
     }
 
     @Override
-
+    // # 9: Required of a MouseListener
     public void mouseClicked(MouseEvent e) {
+
     }
 
     public void mouseEntered(MouseEvent e) {
+
     }
 
     @Override
-
+    // # 11: Required of a MouseListener
     public void mouseExited(MouseEvent e) {
+        // For demo purposes only
+        //  System.out.println("mouseExited event handler executed.");
     }
 
     //main function
@@ -211,7 +228,7 @@ public class GuiGame implements MouseListener {
         Player player = new Player("player");
         Player dealer = new Player("dealer");
         GuiGame game = new GuiGame(player, dealer);
-        //if yes on opening screen game.play;
+
 
     }
 }
